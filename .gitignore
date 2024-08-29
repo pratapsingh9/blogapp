@@ -34,7 +34,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+<<<<<<< HEAD
 
 # wrangler files
 .wrangler
 .dev.vars
+=======
+>>>>>>> f81b0b8 (chnages in code)
