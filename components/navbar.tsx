@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { signIn } from "next-auth/react";
-import { useSession } from "next-auth/react";
+import { signIn } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 const SignedInUrl = () => {
   const { data: session } = useSession();
   const trimmedEmail = (): string => {
     return session?.user?.email?.substring(0, 10) || '';
-  }
+  };
 
   if (!session) return null;
 
@@ -27,8 +27,8 @@ const SignedInUrl = () => {
         <div className="text-xs text-gray-600">@{trimmedEmail()}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Navbar = () => {
   const { data: session, status } = useSession();
@@ -42,15 +42,22 @@ const Navbar = () => {
     return null; // or a loading placeholder
   }
 
+  const LogoClick = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+
   return (
     <header className="bg-white bg-opacity-90 backdrop-blur-sm fixed top-0 left-0 right-0 w-full z-10 shadow-sm">
       <nav className="container mx-auto px-4 py-2 flex justify-between items-center">
-        <h1 className="font-bold text-2xl text-black cursor-pointer">Blogo</h1>
-        <div className="hidden md:flex items-center space-x-6">
+        <h1 className="font-bold text-2xl text-black cursor-pointer" onClick={LogoClick}>Blogo</h1>
+        <div className="hidden md:flex items-center space-x-6 lg:ml-16 md:ml-16">
           {['Home', 'Blogs', 'About', 'Contact'].map((item) => (
             <Link
               key={item}
-              href={ item == 'Home' ? '/' : `/${item.toLowerCase()}`}
+              href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
               className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
             >
               {item}

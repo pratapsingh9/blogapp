@@ -9,13 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sanity/icons": "^3.4.0",
+    "@sanity/image-url": "^1.0.2",
+    "@sanity/vision": "^3.56.0",
     "date-fns": "^3.6.0",
+    "framer-motion": "^11.3.31",
     "lucide-react": "^0.436.0",
     "next": "14.2.7",
     "next-auth": "^4.24.7",
+    "next-sanity": "^9.4.7",
     "react": "^18",
     "react-dom": "^18",
-    "react-query": "^3.39.3"
+    "react-markdown": "^9.0.1",
+    "react-query": "^3.39.3",
+    "sanity": "^3.56.0",
+    "styled-components": "^6.1.13"
   },
   "devDependencies": {
     "@types/node": "^20",
