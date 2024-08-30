@@ -8,11 +8,6 @@ import NewsletterSignup from '@/components/newsletter';
 import HeroSection from '@/components/HeroSection';
 
 
-
-
-
-
-
 export default function Home() {
   return (
     <Background>
