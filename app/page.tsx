@@ -6,13 +6,6 @@ import { Background } from "@/components/Background";
 import Footer from "@/components/footer";
 
 import HeroSection from '@/components/HeroSection';
-export function home() {
-  return (
-    <div>
-
-    </div>
-  )
-}
 
 export default function Home() {
   return (
