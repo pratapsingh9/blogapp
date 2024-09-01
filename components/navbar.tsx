@@ -52,12 +52,14 @@ const Navbar = () => {
   return (
     <header className="bg-white bg-opacity-90 backdrop-blur-sm fixed top-0 left-0 right-0 w-full z-10 shadow-sm">
       <nav className="container mx-auto px-4 py-2 flex justify-between items-center">
-        <h1 className="font-bold text-2xl text-black cursor-pointer" onClick={LogoClick}>Blogo</h1>
+        <h1 className="font-bold text-2xl text-black cursor-pointer" onClick={LogoClick}>
+          <Link href={'/'}>BLogo</Link>
+        </h1>
         <div className="hidden md:flex items-center space-x-6 lg:ml-16 md:ml-16">
           {['Home', 'Blogs', 'About', 'Contact'].map((item) => (
             <Link
               key={item}
-              href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+              href={item === 'Home' ? '' : `/${item.toLowerCase()}`}
               className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
             >
               {item}

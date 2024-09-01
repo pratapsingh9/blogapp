@@ -1,5 +1,4 @@
 'use client'
-
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { Background } from "@/components/Background";
@@ -84,7 +83,6 @@ const ExploreBlogs = () => {
 export default function BlogPage() {
   return (
     <Background>
-      <Navbar />
       <main className="container mx-auto px-6 pt-24 pb-16">
         <section className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">

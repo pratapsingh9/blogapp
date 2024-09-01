@@ -4,6 +4,7 @@ import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import { AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
+
 const ErrorPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">

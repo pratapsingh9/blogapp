@@ -1,10 +1,7 @@
 'use client';
-
 import Navbar from '@/components/navbar';
 import React from 'react';
-
 import ReactMarkdown from 'react-markdown';
-
 
 const BlogContent = ({ content }: { content: string }) => (
   <article className="prose prose-lg mx-auto my-8 px-4 md:px-8 lg:px-12 xl:px-16">
@@ -39,7 +36,6 @@ const BlogContent = ({ content }: { content: string }) => (
     </ReactMarkdown>
   </article>
 );
-
 
 export default function BlogPage({ params }: { params: { postid: string } }) {
   const blogs = [

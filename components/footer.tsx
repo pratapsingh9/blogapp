@@ -1,10 +1,10 @@
 import React from 'react';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, ArrowRight, Phone, MapPin } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
     <footer className="bg-gray-100 text-gray-600 py-16">
-
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
@@ -13,29 +13,24 @@ export default function Footer() {
             <div className="flex space-x-4">
               {[Facebook, Twitter, Instagram, Linkedin].map((Icon, index) => (
                 <a key={index} href="#" className="text-gray-400 hover:text-blue-600 transition-colors">
-
                   <Icon size={20} />
                 </a>
               ))}
             </div>
           </div>
-
-
           <div>
             <h4 className="text-lg font-semibold text-gray-800 mb-4">Quick Links</h4>
             <ul className="space-y-2">
               {['Home', 'Blogs', 'About', 'Contact'].map((item, index) => (
                 <li key={index}>
-                  <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors flex items-center">
+                  <div className="text-gray-600 hover:text-blue-600 transition-colors flex items-center">
                     <ArrowRight size={16} className="mr-2 text-blue-500" />
-
-                    {item}
-                  </a>
+                    <Link href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}>{item}</Link>
+                  </div>
                 </li>
               ))}
             </ul>
           </div>
-
           <div>
             <h4 className="text-lg font-semibold text-gray-800 mb-4">Categories</h4>
             <ul className="space-y-2">
@@ -43,15 +38,12 @@ export default function Footer() {
                 <li key={index}>
                   <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors flex items-center">
                     <ArrowRight size={16} className="mr-2 text-blue-500" />
-
                     {item}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
-
-
           <div>
             <h4 className="text-lg font-semibold text-gray-800 mb-4">Contact Us</h4>
             <ul className="space-y-4">
@@ -65,13 +57,11 @@ export default function Footer() {
               </li>
               <li className="flex items-center">
                 <Mail size={20} className="mr-2 text-blue-500" />
-                <span>pratap.09082005@gmail.com
-                </span>
+                <span>pratap.09082005@gmail.com</span>
               </li>
             </ul>
           </div>
         </div>
-
         <div className="mt-12 pt-8 border-t border-gray-200 text-center">
           <p className="text-gray-500">&copy; {new Date().getFullYear()} Blogo. All rights reserved.</p>
           <div className="mt-4 flex justify-center space-x-4">
@@ -79,12 +69,8 @@ export default function Footer() {
             <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors">Terms of Service</a>
             <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors">Cookie Policy</a>
           </div>
-
         </div>
       </div>
     </footer>
   );
-
-
 }
-
