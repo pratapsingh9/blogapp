@@ -59,7 +59,7 @@ const Navbar = () => {
           {['Home', 'Blogs', 'About', 'Contact'].map((item) => (
             <Link
               key={item}
-              href={item === 'Home' ? '' : `/${item.toLowerCase()}`}
+              href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
               className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
             >
               {item}
