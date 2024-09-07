@@ -31,7 +31,7 @@ export default function Contact() {
                     Enter Your Phone Number
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     id="linkedin"
                     className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007bff] transition duration-300"
                     placeholder="Paste your LinkedIn profile link here"
@@ -70,10 +70,9 @@ export default function Contact() {
                 </div>
                 <div className="text-center">
                   <button
-
                     className="inline-flex h-12 items-center justify-center rounded-md bg-blue-500 px-6 text-lg font-medium text-white shadow-lg transition-colors duration-300 ease-in-out hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b6b] focus-visible:ring-opacity-50"
                   >
-                    Submit
+                    <a href="/resume.pdf" download='resume.pdf'>Submit</a>
                   </button>
                 </div>
               </div>

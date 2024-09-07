@@ -27,7 +27,7 @@ const CTASection = () => {
         <h2 className="text-3xl font-bold mb-4">Ready to Share Your Story?</h2>
         <p className="text-xl mb-8">Join our platform and start writing today.</p>
         <button className="bg-white text-blue-600 px-8 py-3 rounded-full hover:bg-gray-200 transition-colors font-semibold">
-          Get Started
+          Get Started To Blogs
         </button>
       </div>
     </section>
@@ -45,7 +45,7 @@ const NewsletterSignup = () => {
       alert("Please type the email");
     }
   }
-
+  
   const handleInput = (event: { target: { value: React.SetStateAction<string>; }; }) => {
     setEmail(event.target.value);
   }
