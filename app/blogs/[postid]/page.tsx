@@ -1,35 +1,54 @@
-'use client';
-import Navbar from '@/components/navbar';
 import React from 'react';
+import { format } from 'date-fns';
+import { Calendar, Tag, Share, ArrowRight, ThumbsUp, BookmarkPlus, Twitter, Facebook,  } from 'lucide-react';
+import { LinkedinIcon } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
+import pratapImage from '@/public/pratap.jpg'
+interface BlogPost {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+  tags: string[];
+  content: string;
+  author: {
+    name: string;
+    avatar: any;
+    bio: string;
+  };
+  date: string;
+  readTime: string;
+}
 
 const BlogContent = ({ content }: { content: string }) => (
-  <article className="prose prose-lg mx-auto my-8 px-4 md:px-8 lg:px-12 xl:px-16">
+  <article className="prose prose-lg max-w-none">
     <ReactMarkdown
       components={{
         img: ({ node, ...props }) => (
           <img
             {...props}
             alt={props.alt || 'Blog Image'}
-            width={800}
-            height={400}
-            className="w-full h-auto object-cover rounded-lg my-6"
+            className="w-full h-auto object-cover rounded-lg my-8 shadow-lg"
           />
         ),
-        h1: ({ node, ...props }) => <h1 className="text-4xl font-bold my-8" {...props} />,
-        h2: ({ node, ...props }) => <h2 className="text-3xl font-semibold my-6" {...props} />,
-        h3: ({ node, ...props }) => <h3 className="text-2xl font-medium my-4" {...props} />,
-        p: ({ node, ...props }) => <p className="my-6 leading-relaxed text-lg" {...props} />,
-        li: ({ node, ...props }) => <li className="list-disc list-inside my-4" {...props} />,
+        h1: ({ node, ...props }) => <h1 className="text-4xl font-bold my-8 text-gray-900" {...props} />,
+        h2: ({ node, ...props }) => <h2 className="text-3xl font-semibold my-6 text-gray-800" {...props} />,
+        h3: ({ node, ...props }) => <h3 className="text-2xl font-medium my-4 text-gray-700" {...props} />,
+        p: ({ node, ...props }) => <p className="my-6 leading-relaxed text-lg text-gray-700" {...props} />,
+        li: ({ node, ...props }) => <li className="my-2 text-gray-700" {...props} />,
         blockquote: ({ node, ...props }) => (
-          <blockquote className="border-l-4 border-gray-500 pl-4 italic my-6 text-lg" {...props} />
+          <blockquote className="border-l-4 border-blue-500 pl-4 italic my-6 text-xl text-gray-700" {...props} />
         ),
-        code: ({ node, ...props }) => (
-          <code className="bg-gray-100 text-gray-800 p-1 rounded-md">{props.children}</code>
-        ),
-        pre: ({ node, ...props }) => (
-          <pre className="bg-gray-200 p-4 rounded-md my-4 overflow-x-auto">{props.children}</pre>
-        ),
+        code: ({ node, inline, ...props }: any) =>
+          inline ? (
+            <code className="bg-gray-100 text-gray-800 p-1 rounded-md font-mono text-sm" {...props} />
+          ) : (
+            <pre className="bg-gray-800 text-white p-4 rounded-md my-4 overflow-x-auto font-mono text-sm">
+              <code {...props} />
+            </pre>
+          ),
       }}
     >
       {content}
@@ -37,91 +56,217 @@ const BlogContent = ({ content }: { content: string }) => (
   </article>
 );
 
+const Button = ({ children, variant = 'primary', size = 'md', ...props }) => {
+  const baseClasses = "inline-flex items-center justify-center font-medium rounded-md transition-colors";
+  const variantClasses = {
+    primary: "bg-blue-600 text-white hover:bg-blue-700",
+    outline: "border border-gray-300 text-gray-700 hover:bg-gray-50",
+    ghost: "text-gray-700 hover:bg-gray-100",
+  };
+  const sizeClasses = {
+    sm: "px-3 py-2 text-sm",
+    md: "px-4 py-2 text-base",
+    lg: "px-6 py-3 text-lg",
+  };
+
+  return (
+    <button
+      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]}`}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
+
+
+
+
+
+
+const FollowOnSocials = () => {
+  return (
+    <div className="lg:flex hidden flex-row text-center items-center">
+      <Button>
+        <a target="_blank" href="https://www.linkedin.com/in/pratapsinghsisodiya/">
+          Linkedin
+        </a>
+      </Button>
+      <div className="ml-5"></div>
+      <Button>
+        <a target="_blank" href="https://www.linkedin.com/in/pratapsinghsisodiya/">
+          Twitter
+        </a>
+      </Button>
+    </div>
+  );
+};
+
+
+
+const RelatedPosts = ({ currentPostId, blogs }: { currentPostId: number; blogs: BlogPost[] }) => {
+  const relatedPosts = blogs.filter(blog => blog.id !== currentPostId).slice(0, 3);
+
+  return (
+    <div className="mt-16">
+      <h3 className="text-2xl font-bold mb-8 text-gray-800">More from Medium</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {relatedPosts.map(post => (
+          <div key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+            <img src={post.imageUrl} alt={post.title} className="w-full h-48 object-cover" />
+            <div className="p-6">
+              <h4 className="text-xl font-semibold mb-3 text-gray-800">{post.title}</h4>
+              <p className="text-gray-600 text-sm mb-4">{post.description.substring(0, 100)}...</p>
+            </div>
+            <div className="bg-gray-50 p-4">
+              <a href={`/blogs/${post.id}`} className="text-blue-600 font-semibold flex items-center hover:text-blue-700 transition duration-300">
+                Read More <ArrowRight size={16} className="ml-2" />
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export default function BlogPage({ params }: { params: { postid: string } }) {
-  const blogs = [
+  const blogs: BlogPost[] = [
     {
-      title: "Understanding Web 3.0",
-      description: "A comprehensive guide to the future of the internet.",
-      imageUrl: "https://cdn.pixabay.com/photo/2014/02/27/16/10/flowers-276014_640.jpg",
       id: 1,
-      tags: ["#technology", "#web3"],
+      title: "Understanding Web 3.0: The Future of the Internet",
+      description: "A comprehensive guide to the next generation of web technologies and their potential impact.",
+      imageUrl: "https://picsum.photos/800/400",
+      tags: ["technology", "web3", "blockchain"],
+      author: {
+        name: "John Doe",
+        avatar: pratapImage,
+        bio: "Tech enthusiast and blockchain expert",
+      },
+      date: "2023-05-15",
+      readTime: "8 min read",
       content: `
-# Understanding Web 3.0
-Web 3.0 represents the next phase in the evolution of the web. It aims to create a more decentralized, open, and user-centric internet.
-## Key Concepts
-- **Decentralization**: No single entity controls the network.
-- **Blockchain**: The foundation of Web 3.0.
-- **Smart Contracts**: Self-executing contracts with the terms directly written into code.
+# Understanding Web 3.0: The Future of the Internet
 
+Web 3.0 represents the next phase in the evolution of the internet. It aims to create a more decentralized, open, and user-centric web experience. In this article, we'll explore the key concepts behind Web 3.0 and its potential impact on our digital lives.
 
-##
+## Key Concepts of Web 3.0
 
-## Some days we have to create our own ways to make this thing dont you thing its bad
-- what your advice on this things explan me ??
+### 1. Decentralization
+
+One of the core principles of Web 3.0 is decentralization. Unlike the current web, where large corporations control much of our data and online experiences, Web 3.0 aims to distribute control among users.
+
+- **Peer-to-peer networks**: Direct communication between users without intermediaries.
+- **Distributed storage**: Data stored across multiple locations, improving security and reliability.
+
+### 2. Blockchain Technology
+
+Blockchain serves as the foundation for many Web 3.0 applications. It provides a secure, transparent, and immutable way to store and transfer data.
+
+\`\`\`python
+# Simple example of a blockchain structure
+class Block:
+    def __init__(self, data, previous_hash):
+        self.data = data
+        self.previous_hash = previous_hash
+        self.hash = self.calculate_hash()
+
+    def calculate_hash(self):
+        # Simplified hash calculation
+        return hash(str(self.data) + str(self.previous_hash))
+
+# Creating a simple blockchain
+blockchain = [Block("Genesis Block", 0)]
+blockchain.append(Block("Second Block", blockchain[-1].hash))
+blockchain.append(Block("Third Block", blockchain[-1].hash))
+\`\`\`
+
+\`\`\`java
+
+\`\`\`
+
+### 3. Smart Contracts
+
+Smart contracts are self-executing contracts with the terms directly written into code. They automatically enforce and execute agreement terms when predefined conditions are met.
+
+> "Smart contracts will revolutionize how we conduct business and interact with digital services."
+
+## The Future of Web 3.0
+
+As we move towards a more decentralized web, we can expect to see significant changes in how we interact with online services and manage our digital identities. Some potential impacts include:
+
+1. **Enhanced privacy and data ownership**
+2. **Improved security through decentralization**
+3. **New economic models and opportunities**
+4. **More personalized and intelligent web experiences**
+
+## Conclusion
+
+Web 3.0 promises a more open, intelligent, and user-centric internet. While there are still challenges to overcome, the potential benefits of this new paradigm are enormous. As developers, users, and businesses adapt to these changes, we can look forward to a more empowering and innovative digital future.
       `,
     },
-    {
-      title: "The Rise of AI",
-      description: "How artificial intelligence is reshaping our world.",
-      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvimPzwOXCXDCFyo4gygMnyo_C3kJ6XoGCDQ&s",
-      id: 2,
-      tags: ["#AI", "#innovation"],
-      content: `
-# The Rise of AI
-Artificial Intelligence (AI) is rapidly transforming industries and societies. This article explores how AI is reshaping the world.
-## Areas of Impact
-- **Healthcare**: AI in diagnostics and treatment.
-- **Finance**: Algorithmic trading and fraud detection.
-- **Everyday Life**: AI in personal assistants like Siri and Alexa.
-      `,
-    },
-    {
-      title: "Sustainable Living Tips",
-      description: "Simple ways to live a more eco-friendly lifestyle.",
-      imageUrl: "https://www.datocms-assets.com/46272/1633199491-1633199490440.jpg?auto=format&fit=max&w=1200",
-      id: 3,
-      tags: ["#sustainability", "#eco-friendly"],
-      content: `
-# Sustainable Living Tips
-Living sustainably is about reducing your environmental footprint. Here are some tips to help you live a more eco-friendly lifestyle.
-## Tips
-- **Reduce, Reuse, Recycle**: The three Rs of sustainability.
-- **Energy Efficiency**: Use energy-efficient appliances.
-- **Sustainable Transportation**: Walk, bike, or use public transit.
-      `,
-    },
+    // ... (other blog posts)
   ];
 
   const selectedBlog = blogs.find(blog => blog.id.toString() === params.postid);
 
+  if (!selectedBlog) {
+    return <div className="min-h-screen flex items-center justify-center bg-gray-100 text-2xl text-gray-700">Blog post not found</div>;
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50 mt-8">
       <Navbar />
-      <main className="container mx-auto px-4 md:px-8 lg:px-12 xl:px-16 pt-24 pb-16 bg-white shadow-lg rounded-lg">
-        {selectedBlog && (
-          <>
-            <header className="mb-8">
-              <h1 className="text-4xl font-bold mb-2">{selectedBlog.title}</h1>
-              <p className="text-xl text-gray-600 mb-4">{selectedBlog.description}</p>
-              <img
-                src={selectedBlog.imageUrl}
-                alt={selectedBlog.title}
-                width={1200}
-                height={600}
-                className="w-full h-auto object-cover rounded-lg mb-6"
-              />
-              <div className="mt-4">
-                {selectedBlog.tags.map(tag => (
-                  <span key={tag} className="inline-block bg-gray-200 text-gray-700 rounded-full px-3 py-1 text-sm font-semibold mr-2">
-                    {tag}
-                  </span>
-                ))}
+      <main className="container mx-auto px-4 md:px-8 lg:px-16 xl:px-32 py-12">
+        <article className="max-w-4xl mx-auto">
+          <header className="mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">{selectedBlog.title}</h1>
+            <p className="text-xl text-gray-600 mb-6">{selectedBlog.description}</p>
+            <div className="flex items-center mb-6">
+              <img src={'https://wallpapers.com/images/hd/yoriichi-tsugikuni-gvagv0qgl5zoett7.jpg'} alt={selectedBlog.author.name} className="h-12 w-12 rounded-full mr-4" />
+              <div>
+                <p className="font-semibold text-gray-800">{'Pratap Singh Sisodiya'}</p>
+                <div className="flex items-center text-sm text-gray-500">
+                  <span className="mr-3">{format(new Date(selectedBlog.date), 'MMMM d, yyyy')}</span>
+                  <span>·</span>
+                  <span className="ml-3">{selectedBlog.readTime}</span>
+                </div>
               </div>
-            </header>
-            <BlogContent content={selectedBlog.content} />
-          </>
-        )}
+            </div>
+            <div className="flex flex-wrap gap-2 mb-6">
+              {selectedBlog.tags.map(tag => (
+                <span key={tag} className="bg-gray-200 px-3 py-1 rounded-full text-sm font-medium text-gray-700">
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <div className="flex justify-between items-center">
+
+            </div>
+          </header>
+          <img
+            src={selectedBlog.imageUrl}
+            alt={selectedBlog.title}
+            className="w-full h-auto object-cover rounded-lg mb-12 shadow-lg"
+          />
+          <BlogContent content={selectedBlog.content} />
+          <footer className="mt-12 pt-8 border-t border-gray-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <img src={'https://wallpapers.com/images/hd/yoriichi-tsugikuni-gvagv0qgl5zoett7.jpg'} alt={selectedBlog.author.name} className="h-16 w-16 rounded-full mr-4" />
+                <div>
+                  <p className="font-semibold text-lg text-gray-800">{'Pratap Singh Sisodiya'}</p>
+                  <p className="text-gray-600">{'Tech enthusiast and Devloper'}</p>
+                </div>
+              </div>
+              <FollowOnSocials />
+        
+            </div>
+          </footer>
+        </article>
+        <RelatedPosts currentPostId={selectedBlog.id} blogs={blogs} />
       </main>
+      <Footer />
     </div>
   );
 }

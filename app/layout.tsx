@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { NextAuthProvider } from "@/components/sesisonProvider";
 import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
+import QueryProvider from "@/utils/QueryProvider";
+
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,12 +22,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <NextAuthProvider>
-          <Navbar />
-          <main className="flex-grow">
-          {children}
-          </main>
+          <QueryProvider>
+            <Navbar />
+
+            <main className="flex-grow">
+              {children}
+            </main>
+          </QueryProvider>
         </NextAuthProvider>
-        
+
       </body>
     </html>
   );

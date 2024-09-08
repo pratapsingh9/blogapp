@@ -4,6 +4,11 @@ import dynamic from 'next/dynamic';
 import { Background } from "@/components/Background";
 import Footer from "@/components/footer";
 import { useRouter } from 'next/navigation';
+import client from '@/utils/cms';
+import { useQuery } from '@tanstack/react-query';
+import { NEXT_QUERY_PARAM_PREFIX } from 'next/dist/lib/constants';
+
+
 
 const Navbar = dynamic(() => import('@/components/navbar'), { ssr: false });
 
@@ -42,34 +47,26 @@ const BlogCard = ({ title, description, imageUrl, link, tags, id }: any) => {
   )
 };
 
+// Correctly parse the JSON response
+const fetchBlogs = async () => {
+  const response = await fetch('/api/hono/blogs', {
+    cache: 'force-cache',
+  });
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json(); // Parse JSON here
+};
+
 const ExploreBlogs = () => {
-  const blogs = [
-    {
-      title: "Understanding Web 3.0",
-      description: "A comprehensive guide to the future of the internet.",
-      imageUrl: "https://cdn.pixabay.com/photo/2014/02/27/16/10/flowers-276014_640.jpg",
-      link: "#",
-      tags: ["#technology", "#web3"],
-      id: 1,
-    },
-    {
-      title: "The Rise of AI",
-      description: "How artificial intelligence is reshaping our world.",
-      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvimPzwOXCXDCFyo4gygMnyo_C3kJ6XoGCDQ&s",
-      link: "#",
-      id: 2,
-      tags: ["#AI", "#innovation"]
-    },
-    {
-      title: "Sustainable Living Tips",
-      description: "Simple ways to live a more eco-friendly lifestyle.",
-      imageUrl: "https://www.datocms-assets.com/46272/1633199491-1633199490440.jpg?auto=format&fit=max&w=1200",
-      link: "#",
-      id: 3,
-      tags: ["#sustainability", "#eco-friendly"]
-    },
-    // Add more blog objects here as needed
-  ];
+  // Use the useQuery hook to fetch data
+  const { data: blogs, error, isLoading } = useQuery({
+    queryKey:['blogs'],
+    queryFn:fetchBlogs
+  })
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error occurred: {error.message}</div>;
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -79,6 +76,7 @@ const ExploreBlogs = () => {
     </section>
   );
 };
+
 
 export default function BlogPage() {
   return (
