@@ -1,27 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 int main() {
-    vector<int> v = {2, 4, 8, 2, 10, 4, 91, 34, 9, 2, 49, 5};
-    int n = v.size();
-    int k = 3; // Window size
-    int ans = 0;
-    int maxsum = INT_MIN;
-
-    // Calculate the sum of the first window
-    for (int i = 0; i < k; i++) {
-        ans += v[i];
+   int arr[2][2];
+   cout << "Enter the number of 3d array ";
+   for (int i = 0; i < 2; i++)
+   {
+    /* code */
+    for (int j = 0; j < 2; j++)
+    {
+        /* code */
+        cin >> arr[i][j] ;
     }
-    maxsum = ans;
-    int j = 0; 
-    for (int i = k; i < n; i++) {
-        // Slide the window right: subtract the element going out and add the new element coming in
-        ans = ans + v[i] - v[j];
-        j += 1;
-        maxsum = max(maxsum, ans);
+    
+   }
+
+   for (int i = 0; i < 2; i++)
+   {
+    /* code */
+    for (int j = 0; j < 2; j++)
+    {
+        /* code */
+        cout << arr[i][j] << " ";
     }
-
-    cout << maxsum << endl;
-
-    return 0;
+    cout << endl;
+   }
 }

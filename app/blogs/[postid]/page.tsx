@@ -1,11 +1,12 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { Calendar, Tag, Share, ArrowRight, ThumbsUp, BookmarkPlus, Twitter, Facebook,  } from 'lucide-react';
+import { Calendar, Tag, Share, ArrowRight, ThumbsUp, BookmarkPlus, Twitter, Facebook, } from 'lucide-react';
 import { LinkedinIcon } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import pratapImage from '@/public/pratap.jpg'
+import { useQuery } from '@tanstack/react-query';
 interface BlogPost {
   id: number;
   title: string;
@@ -130,83 +131,24 @@ const RelatedPosts = ({ currentPostId, blogs }: { currentPostId: number; blogs: 
   );
 };
 
+const fetchBlogs = async () => {
+  const response = await fetch('/api/hono/blogs', {
+    cache: 'force-cache',
+  });
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json(); // Parse JSON here
+};
+
 export default function BlogPage({ params }: { params: { postid: string } }) {
-  const blogs: BlogPost[] = [
-    {
-      id: 1,
-      title: "Understanding Web 3.0: The Future of the Internet",
-      description: "A comprehensive guide to the next generation of web technologies and their potential impact.",
-      imageUrl: "https://picsum.photos/800/400",
-      tags: ["technology", "web3", "blockchain"],
-      author: {
-        name: "John Doe",
-        avatar: pratapImage,
-        bio: "Tech enthusiast and blockchain expert",
-      },
-      date: "2023-05-15",
-      readTime: "8 min read",
-      content: `
-# Understanding Web 3.0: The Future of the Internet
-
-Web 3.0 represents the next phase in the evolution of the internet. It aims to create a more decentralized, open, and user-centric web experience. In this article, we'll explore the key concepts behind Web 3.0 and its potential impact on our digital lives.
-
-## Key Concepts of Web 3.0
-
-### 1. Decentralization
-
-One of the core principles of Web 3.0 is decentralization. Unlike the current web, where large corporations control much of our data and online experiences, Web 3.0 aims to distribute control among users.
-
-- **Peer-to-peer networks**: Direct communication between users without intermediaries.
-- **Distributed storage**: Data stored across multiple locations, improving security and reliability.
-
-### 2. Blockchain Technology
-
-Blockchain serves as the foundation for many Web 3.0 applications. It provides a secure, transparent, and immutable way to store and transfer data.
-
-\`\`\`python
-# Simple example of a blockchain structure
-class Block:
-    def __init__(self, data, previous_hash):
-        self.data = data
-        self.previous_hash = previous_hash
-        self.hash = self.calculate_hash()
-
-    def calculate_hash(self):
-        # Simplified hash calculation
-        return hash(str(self.data) + str(self.previous_hash))
-
-# Creating a simple blockchain
-blockchain = [Block("Genesis Block", 0)]
-blockchain.append(Block("Second Block", blockchain[-1].hash))
-blockchain.append(Block("Third Block", blockchain[-1].hash))
-\`\`\`
-
-\`\`\`java
-
-\`\`\`
-
-### 3. Smart Contracts
-
-Smart contracts are self-executing contracts with the terms directly written into code. They automatically enforce and execute agreement terms when predefined conditions are met.
-
-> "Smart contracts will revolutionize how we conduct business and interact with digital services."
-
-## The Future of Web 3.0
-
-As we move towards a more decentralized web, we can expect to see significant changes in how we interact with online services and manage our digital identities. Some potential impacts include:
-
-1. **Enhanced privacy and data ownership**
-2. **Improved security through decentralization**
-3. **New economic models and opportunities**
-4. **More personalized and intelligent web experiences**
-
-## Conclusion
-
-Web 3.0 promises a more open, intelligent, and user-centric internet. While there are still challenges to overcome, the potential benefits of this new paradigm are enormous. As developers, users, and businesses adapt to these changes, we can look forward to a more empowering and innovative digital future.
-      `,
-    },
-    // ... (other blog posts)
-  ];
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['blogs'],
+    queryFn: fetchBlogs
+  })
+  const blogs = data;
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error occurred: {error.message}</div>;
 
   const selectedBlog = blogs.find(blog => blog.id.toString() === params.postid);
 
@@ -260,7 +202,7 @@ Web 3.0 promises a more open, intelligent, and user-centric internet. While ther
                 </div>
               </div>
               <FollowOnSocials />
-        
+
             </div>
           </footer>
         </article>

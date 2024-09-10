@@ -2,8 +2,10 @@ import { Hono } from 'hono';
 import {handle} from 'hono/vercel'
 // Create a new Hono app
 const app = new Hono().basePath('/api/hono/');
+import {data} from '@/utils/data'
 
 const blogPosts = [
+  ...data,
   {
     id: 1,
     title: "Understanding Web 3.0: The Future of the Internet",
